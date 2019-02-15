@@ -1,0 +1,82 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/lore_layout">
+    <div layout:fragment="content">
+        <div id="lore_select">
+            <span>目录选择：</span>
+        </div>
+        <div id="lore_card"></div>
+        <div><a th:href="@{/lore/know/downloadToolPage}">工具下载</a></div>
+
+        <script th:inline="javascript">
+            $(function(){
+                add_child_select(0);
+            });
+
+            function init_lore_card(code){
+                /*<![CDATA[*/
+                let url= /*[[@{/lore/know/getLoreByCode}]]*/ '#';
+                /*]]>*/
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data:JSON.stringify({code:code}),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    async: true,
+                    success: function (data){
+                        let card_node = $("#lore_card");
+                        card_node.empty();
+                        let str = "<div class='card'>";
+                        str += "<div class='card-header'>";
+                        str += data.title;
+                        str += "</div>";
+                        str += "<div class='card-body'>";
+                        str += data.content.replace(/\n/g,"<br/>");
+                        str +="</div>";
+                        str += "</div>";
+                        card_node.append($(str))
+                    }
+                });
+            }
+
+            function add_child_select(code){
+                let selects = $("#lore_select select");
+                let i=3;
+                if(code.length === 2)i=1;
+                if(code.length === 5)i=2;
+                for(;i<selects.length;i++){
+                    selects[i].remove();
+                }
+
+                /*<![CDATA[*/
+                let url= /*[[@{/lore/know/getLoreByParentCode}]]*/ '#';
+                /*]]>*/
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data:JSON.stringify({code:code}),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    async: true,
+                    success: function (data){
+                        if(data.length > 0){
+                            let str = "<select class='border-info border my-2 mx-2'>";
+                            str += "<option>请选择</option>";
+                            for(let i=0;i<data.length;i++){
+                                let lore = data[i];
+                                str +="<option value='"+lore.code+"'>"+lore.title+"</option>";
+                            }
+                            str += "</select>";
+                            let tmp = $(str);
+                            tmp.bind('change', function(){
+                                init_lore_card($(this).val());
+                                add_child_select($(this).val());
+                            });
+                            $("#lore_select").append(tmp);
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+</div>

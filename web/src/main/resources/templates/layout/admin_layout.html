@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+    <head th:replace="fragments/head::header">
+    </head>
+    <style>
+        .layout_content{
+            margin-bottom: 1rem;
+        }
+    </style>
+<body>
+    <div class="container-fluid">
+        <div class="fixed-top" th:include="fragments/header::header">header</div>
+        <div class="row mx-1" style="margin-top:4.5rem;margin-bottom:2rem;">
+            <div class="col-md-2 col-sm-3 bg-info h-100" th:include="fragments/left::admin_left">left</div>
+            <div class="col-md-10 col-sm-9 layout_content" layout:fragment="content"></div>
+        </div>
+        <div class="fixed-bottom text-center py-2 bg-info" th:include="fragments/footer::footer">footer</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/admin_layout">
+    <div layout:fragment="content">
+        <form th:action="@{/admin/saveUser}" method="post">
+            <input type="hidden" name="id" id="id" th:value="${user?.id}"/>
+            <label for="name">用户名：</label>:
+            <input type="text" id="name" name="name" th:value="${user?.name}" autofocus="autofocus" required="required" /> <br/>
+            <label for="nickName">昵称：</label>:
+            <input type="text" id="nickName" name="nickName" th:value="${user?.nickName}" autofocus="autofocus" required="required" /> <br/>
+            <label for="password">密码</label>:
+            <input type="password" id="password" name="password" required="required" /> <br/>
+            <input type="submit" value="保存"/>
+        </form>
+    </div>
+</div>

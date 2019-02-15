@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head::header">
+</head>
+<body>
+<div class="container-fluid">
+    <!--<div th:replace="fragments/header::header">left</div>-->
+    <!--<div th:replace="fragments/left::left">left</div>-->
+    <!--<div th:replace="fragments/sidebar::sidebar">sidebar</div>-->
+    <div layout:fragment="content"></div>
+    <!--<div th:replace="fragments/footer::footer">footer</div>-->
+</div>
+</body>
+</html>

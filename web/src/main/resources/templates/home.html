@@ -1,0 +1,75 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/funds_layout">
+    <div layout:fragment="content">
+        <div class="text-center">
+            <div class="my-5 py-5 border border-info">
+                <section>
+                    <article>
+                        <header class="h3 my-3">
+                            公示内容
+                        </header>
+                        <div class="content my-2">
+                            <span>经费剩余：</span><span th:text="${funds}+（元）"></span> <br/>
+                            <span>尚未报销：</span><span th:text="${allApply}+（元）"></span>
+                        </div>
+                        <div class="row">
+                            <div class="carousel slide d-inline col-md-12" data-ride="carousel" data-interval="3000">
+                                <div class="carousel-inner" id="eachApplyShow">
+
+                                </div>
+                            </div>
+                            <div class="d-inline col-md-1 offset-md-11">
+                                <button class="btn btn-info btn-sm bg-warning" style="width:5rem;height:2rem;" onclick="changeAnother()">换一换</button>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-primary px-3" th:href="@{/funds/index}">我的</a>
+                <a class="btn btn-warning px-3" th:href="@{/admin/index}" th:if="${session.user.role.id==1}">管理</a>
+                <a class="btn btn-danger px-3" th:href="@{/logout}" >退出</a>
+            </div>
+        </div>
+        <script  th:inline="javascript">
+            $(function(){
+                changeAnother();
+            });
+
+            function changeAnother(){
+                /*<![CDATA[*/
+                let url= /*[[@{/pub/changeAnother.action}]]*/ '#';
+                /*]]>*/
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    async: true,
+                    success: function(data) {
+                        let str = "";
+                        $("#eachApplyShow").empty();
+                        if(data.applys) {
+                            for(let i=0;i<data.applys.length;i++){
+                                let apply = data.applys[i];
+                                str += "<div class='bg-info py-2 text-white carousel-item ";
+                                if(i===0){
+                                    str += "active";
+                                }
+                                str +=     "'>";
+                                str += "<div class='d-inline px-2'>"+apply.user.nickName+"</div>";
+                                str += "<div class='d-inline px-2'>"+apply.date+"</div>";
+                                str += "<div class='d-inline px-2'>"+ data.types[apply.type] +"</div>";
+                                str += "<div class='d-inline px-2'>"+ data.states[apply.state] +"</div>";
+                                str += "<div class='d-inline px-2'>"+apply.reason+"</div>";
+                                str += "<div class='d-inline px-2'>"+apply.persons+"</div>";
+                                str += "</div>";
+                            }
+                            $("#eachApplyShow").append($(str));
+                        }
+                    }
+                })
+            }
+        </script>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/admin_layout">
+    <div layout:fragment="content">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <td>时间</td>
+                <td>金额</td>
+                <td>类型</td>
+                <td>状态</td>
+                <td>描述</td>
+                <td>人员</td>
+                <td>操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="apply : ${applys}">
+                <td th:text="${apply.date}">2018-12-13 12:00</td>
+                <td th:text="${apply.money}">10.5</td>
+                <td th:text="${types[apply.type]}">饭费</td>
+                <td th:text="${states[apply.state]}">未报销</td>
+                <td th:text="${apply.reason}">描述</td>
+                <td th:text="${apply.persons}">人员</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

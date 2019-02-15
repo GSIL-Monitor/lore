@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::header">
+</head>
+<body>
+<form th:action="@{/user/registerSave}" method="post">
+    <label for="name">Username</label>:
+    <input type="text" id="name" name="name" autofocus="autofocus" required="required" /> <br/>
+    <label for="password">Password</label>:
+    <input type="password" id="password" name="password" required="required" /> <br/>
+    <input type="submit" value="保存"/>
+</form>
+</body>
+</html>

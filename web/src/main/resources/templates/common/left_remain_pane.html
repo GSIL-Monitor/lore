@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::header">
+</head>
+<body>
+<div class="container-fluid">
+    <div th:fragment="left_remain_pane(span,section)" class="left-fixed-pane bg-light border-radius-right border-info">
+        <div class="show-button"><div class="bg-info text-white border-radius-right"><span th:replace="${span}"></span> </div></div>
+        <section th:replace="${section}"></section>
+        <script th:inline="javascript">
+            $(".left-fixed-pane .show-button").click(function(e){
+                if($(this).parent().prop("class").indexOf("left-pane-show") !== -1){
+                    $(this).parent().removeClass("left-pane-show");
+                    $(this).parent().addClass("left-pane-hide").css("left","-15rem");
+                    $(this).find("span").text(">>")
+                }else{
+                    $(this).parent().removeClass("left-pane-hide");
+                    $(this).parent().addClass("left-pane-show").css("left","0");
+                    $(this).find("span").text("<<")
+                }
+            });
+        </script>
+    </div>
+</div>
+</body>
+</html>

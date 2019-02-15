@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::header">
+</head>
+<style>
+
+</style>
+<body>
+<div>
+    <div th:replace="common/left_remain_pane::left_remain_pane(~{::span},~{::section})">
+        <span>&gt;&gt;</span>
+        <section id="left_remain_pane_data"></section>
+    </div>
+    <!--<div class="left-fixed-pane bg-primary border-radius-right">
+        <div class="show-button"><div class="bg-primary text-white border-radius-right">菜单</div></div>
+    </div>-->
+
+
+</div>
+<script th:inline="javascript">
+    $(function(){
+        /*<![CDATA[*/
+        let url= /*[[@{/demo/getTasks}]]*/ '#';
+        /*]]>*/
+        $.ajax({
+            url: url,
+            type: 'get',
+            data:{"userId":"40288f1867e82a910167e82c2a190000"},
+            dataType: 'json',
+            contentType: 'application/json',
+            async: true,
+            success: function(data) {
+                let str = "";
+                var node = $("#left_remain_pane_data");
+                node.empty();
+                if(data.data) {
+                    for(let i=0;i<data.data.length;i++){
+                        let task = data.data[i];
+                        str += "<div>";
+                        str += "<div class='d-inline px-2'>"+task.name+"</div>";
+                        str += "<div class='d-inline px-2'>"+task.startPerson+"</div>";
+                        str += "</div>";
+                    }
+                    node.append($(str));
+                }
+            }
+        });
+    });
+
+    /*$(function(){
+        getTasks();
+    });
+
+    function getTasks(){
+        /!*<![CDATA[*!/
+        let url= /!*[[@{/demo/getTasks}]]*!/ '#';
+        /!*]]>*!/
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({roleId : 1,userId : 2}),
+            async: true,
+            success: function(data) {
+                let str = "";
+                if(data.tasks){
+                    for(let i=0;i<data.tasks.length;i++){
+                        str += "<li>";
+                        str += "<span>"+data.tasks[i].id+"</span>";
+                        str += "<span>"+data.tasks[i].name+"</span>";
+                        str += "<span>"+ data.tasks[i].processId+"</span>";
+                        str += "<button onclick=\"showImg('"+ data.tasks[i].processId +"')\">显示图片</button>";
+                        str += "</li>";
+                    }
+                    $("#taskList").append($(str));
+                }
+            }
+        })
+    }
+
+    function showImg(taskId){
+        /!*<![CDATA[*!/
+        let src= /!*[[@{/demo/processDiagram}]]*!/ '#';
+        /!*]]>*!/
+        $("#flowImg").append($("<img src='"+src+"?processId="+ taskId + "'/>"));
+    }
+
+    function beginNewTask(){
+        /!*<![CDATA[*!/
+        let url= /!*[[@{/demo/add}]]*!/ '#';
+        /!*]]>*!/
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({roleId : 1,userId : 2}),
+            async: true,
+            success: function(data) {
+                getTasks();
+            }
+        })
+    }*/
+
+</script>
+</body>
+</html>

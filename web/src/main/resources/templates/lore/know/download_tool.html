@@ -1,0 +1,10 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/lore_layout">
+    <div layout:fragment="content">
+        <ul class="list-unstyled">
+            <li th:each="entry:${fileNameMap}">
+                <a th:href="${entry.value}" th:text="${entry.key}"></a>
+            </li>
+        </ul>
+    </div>
+</div>

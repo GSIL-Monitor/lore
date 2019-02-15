@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head th:replace="fragments/head::head(~{::title},~{}, ~{})">
+    <title>Layout</title>
+</head>
+<body>
+<div class="container-fluid row">
+    <div th:replace="fragments/header::header">left</div>
+    <div class="col-md-2 bg-primary layout_left" th:replace="fragments/left::left">left</div>
+    <!--<div th:replace="fragments/sidebar::sidebar">sidebar</div>-->
+    <div class="col-md-8 layout_content" layout:fragment="content"></div>
+    <!--<div th:replace="fragments/footer::footer">footer</div>-->
+</div>
+</body>
+</html>

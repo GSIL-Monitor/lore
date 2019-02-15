@@ -1,0 +1,38 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/admin_layout">
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-6 col-sm-8 col-sm-10">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <td>姓名</td>
+                        <td>餐费</td>
+                        <td>出租</td>
+                        <td>油费</td>
+                        <td>总计</td>
+                        <td>操作</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="map:${listMap}">
+                        <td><span th:text="${map.name}"></span></td>
+                        <td><span th:text="${map.meal}"></span></td>
+                        <td><span th:text="${map.car}"></span></td>
+                        <td><span th:text="${map.oil}"></span></td>
+                        <td><span th:text="${map.all}"></span></td>
+                        <td>
+                            <a class="btn btn-danger btn-sm" th:href="@{/admin/changeState(id=${map.id})}">修改为已报销</a>
+                            <a class="btn btn-info btn-sm" th:href="@{/admin/manageFundsDetail(id=${map.id})}">详细</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <a class="btn btn-primary px-3" th:href="@{/admin/index}">返回</a>
+                    <a class="btn btn-primary px-3" th:href="@{/admin/addFunds}">经费发放</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

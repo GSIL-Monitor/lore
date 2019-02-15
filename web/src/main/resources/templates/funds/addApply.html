@@ -1,0 +1,63 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/funds_layout">
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h5>申请</h5>
+                <form th:action="@{/funds/apply/save}" method="post" role="form">
+                    <input type="hidden" id="id" name="id" th:value="${apply?.id}"/>
+                    <div class="form-group">
+                        <div class="input-group date" id="applyDatePicker" data-date-format="yyyy-mm-dd hh:ii">
+                            <label for="date" class="input-group-addon">日期：</label>
+                            <input type="text" id="date" name="date" required class="form-control" th:value="${apply?.date}" readonly style="background: #fff;"/>
+                            <span class="input-group-addon data-img">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                        </div>
+                        <div class="input-group">
+                            <label for="money" class="input-group-addon">金额：</label>
+                            <input type="number" id="money" name="money" min="0.0" step="0.1" th:value="${apply?.money}" required class="form-control" />
+                        </div>
+                        <div class="input-group">
+                            <label for="type" class="input-group-addon">类型：</label>
+                            <select class="form-control" id="type" name="type">
+                                <option th:each="type:${types}" th:selected="${apply?.type==type.key}" th:value="${type.key}" th:text="${type.value}"></option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="reason" class="input-group-addon">描述：</label>
+                            <input type="text" id="reason" name="reason" th:value="${apply?.reason}" required class="form-control" />
+                        </div>
+                        <div class="input-group">
+                            <label class="input-group-addon">人员：</label>
+                            <div class="form-check form-check-inline" th:each="user : ${users}">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" th:checked="${apply?.persons?.contains(user.nickName)}" name="persons" th:value="${user.nickName}"><span th:text="${user.nickName}"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 offset-4">
+                            <input class="form-control btn btn-primary" type="submit" value="保存"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script>
+            $(function () {
+                $('#date').datetimepicker({
+                    weekStart: 1,
+                    minView: 3,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    language: 'zh-CN',
+                    format: 'yyyy-mm-dd',
+                    pickerPosition: 'bottom-left',
+                    showMeridian: 1
+                });
+            });
+        </script>
+    </div>
+</div>

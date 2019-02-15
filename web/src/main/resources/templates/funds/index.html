@@ -1,0 +1,41 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/funds_layout">
+    <div layout:fragment="content">
+        <div>
+            <span>总计：</span><span th:text="${statMap['all']}">10.5</span>
+            <span>饭费：</span><span th:text="${statMap['meal']}">10.5</span>
+            <span>出租：</span><span th:text="${statMap['car']}">10.5</span>
+            <span>油费：</span><span th:text="${statMap['oil']}">10.5</span>
+        </div>
+        <div>
+            <a class="btn btn-primary btn-lg position-fixed" style="right:5rem;" th:href="@{/funds/apply/add}">新增</a>
+        </div>
+        <table class="table table-bordered table-striped w-75">
+            <thead>
+                <tr>
+                    <td>时间</td>
+                    <td>金额</td>
+                    <td>类型</td>
+                    <td>状态</td>
+                    <td>描述</td>
+                    <td>人员</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="apply : ${applys}">
+                    <td th:text="${apply.date}">2018-12-13 12:00</td>
+                    <td th:text="${apply.money}">10.5</td>
+                    <td th:text="${types[apply.type]}">饭费</td>
+                    <td th:text="${states[apply.state]}">未报销</td>
+                    <td th:text="${apply.reason}">描述</td>
+                    <td th:text="${apply.persons}">人员</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" th:href="@{/funds/apply/edit(id=${apply.id})}">修改</a>
+                        <!--<a class="btn btn-primary btn-sm" th:href="@{/funds/apply/delete(id=${apply.id})}">删除</a>-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

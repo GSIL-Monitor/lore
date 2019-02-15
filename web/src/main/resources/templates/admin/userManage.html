@@ -1,0 +1,48 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/admin_layout">
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-md-10 offset-1">
+                <a class="btn btn-primary" th:text="添加" th:href="@{/admin/addUser}"></a>
+                <a class="btn btn-primary" th:href="@{/admin/index}">返回</a>
+                <table class="table table-bordered table-striped">
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.name}">Onions</td>
+                        <td th:text="${user.nickName}">Onions</td>
+                        <td>
+                        <span th:each="role:${roles}">
+                            <input type="radio" th:name="'role'+${user.id}" onclick="changeRole(this)" th:data-user="${user.id}" th:data-role="${role.id}" th:checked="${user.role.id==role.id}"/><span class="small" th:text="${role.dsc}"></span>
+                        </span>
+                        </td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" th:href="@{/admin/editUser(id=${user.id})}">修改</a>
+                            <a class="btn btn-warning btn-sm" th:href="@{/admin/user/delete(id=${user.id})}">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            function changeRole(dom){
+                let roleId = $(dom).data("role");
+                let userId = $(dom).data("user");
+                /*<![CDATA[*/
+                let url= /*[[@{/admin/changeRole}]]*/ '#';
+                /*]]>*/
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({roleId : roleId,userId : userId}),
+                    async: true,
+                    success: function(data) {
+                        if(data.success === "false") {
+                            alert("角色修改失败");
+                        }
+                    }
+                })
+            }
+        </script>
+    </div>
+</div>
