@@ -61,10 +61,15 @@
                         body+="金额：" + money+"<br/>";
                         body+="类型：" + type+"<br/>";
                         body+="备注：" + reason;
-                    if(id != null && id !== ""){
-
-                    }
                     let subject = "经费报销";
+                    if(id != null && id !== ""){
+                        subject = "经费报销（修改" +date+ "）";
+                    }
+                    let persons = "";
+                        $("input[name=presons]:checked").each(function(){
+                        $(this).next('span').text();
+                    });
+
                     $("#send_email").attr("href","mailto:caopeihe@topnet.net.cn?Subject="+subject+"&body="+body + "&cc=guoxiaoliang@topnet.net.cn");
                     document.getElementById("send_email").click();
                 }
