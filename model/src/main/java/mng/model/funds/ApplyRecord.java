@@ -19,6 +19,7 @@ import java.util.Objects;
 @Proxy(lazy = false)
 @Entity
 @Table(name="apply_record")
+@EntityListeners(AuditingEntityListener.class)
 public class ApplyRecord extends Base {
     /** 需要审核的限额 */
     public final static double LIMIT_MONEY = 50.0;

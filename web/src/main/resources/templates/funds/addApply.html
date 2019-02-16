@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <h5>申请</h5>
-                <form th:action="@{/funds/apply/save}" method="post" role="form">
+                <form th:action="@{/funds/apply/save}" method="post" role="form" id="apply_form">
                     <input type="hidden" id="id" name="id" th:value="${apply?.id}"/>
                     <div class="form-group">
                         <div class="input-group date" id="applyDatePicker" data-date-format="yyyy-mm-dd hh:ii">
@@ -43,8 +43,33 @@
                 </form>
             </div>
         </div>
+        <a id="send_email" href="" class="hide"></a>
         <script>
             $(function () {
+                $("#apply_form").submit(function(){
+                    sendEmail();
+                    return true;
+                });
+
+                function sendEmail(){
+                    let id=$("input[name='id']").val(),
+                        date=$("input[name='date']").val(),
+                        money=$("input[name='money']").val(),
+                        type=$("select[name='type']").text(),
+                        reason=$("input[name='reason']").val(),
+                        body="日期：" + date +"<br/>";
+                        body+="金额：" + money+"<br/>";
+                        body+="类型：" + type+"<br/>";
+                        body+="备注：" + reason;
+                    if(id != null && id !== ""){
+
+                    }
+                    let subject = "经费报销";
+                    $("#send_email").attr("href","mailto:caopeihe@topnet.net.cn?Subject="+subject+"&body="+body + "&cc=guoxiaoliang@topnet.net.cn");
+                    document.getElementById("send_email").click();
+                }
+
+
                 $('#date').datetimepicker({
                     weekStart: 1,
                     minView: 3,

@@ -26,4 +26,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     public WatchInterceptor watchInterceptor() {
         return new WatchInterceptor();
     }
+
+    @Bean
+    public MyLocaleResolver localeResolver() {
+        return new MyLocaleResolver();
+    }
 }

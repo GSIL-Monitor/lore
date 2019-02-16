@@ -16,6 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "funds_record")
+@EntityListeners(AuditingEntityListener.class)
 public class FundsRecord extends Base {
     /**  无效 */
     public final static String RECORD_VALID_NO = "0";

@@ -1,6 +1,9 @@
 <div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
      layout:decorator="layout/lore_layout">
     <div layout:fragment="content">
-
+        <div class="alert alert-warning alert-dismissible fade show">
+            <button data-dismiss="alert" class="close">&times;</button>
+            <span th:text="#{notice.tip}"></span>
+        </div>
     </div>
 </div>
