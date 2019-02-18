@@ -1,19 +1,20 @@
 package mng.web.funds;
 
+import com.alibaba.fastjson.JSONObject;
 import mng.model.funds.ApplyRecord;
 import mng.model.user.FundRole;
 import mng.model.user.FundUser;
 import mng.service.funds.ApplyRecordService;
 import mng.service.user.FundRoleService;
 import mng.service.user.UserService;
+import mng.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -46,6 +47,11 @@ public class FundsController {
         model.put("types", applyRecordService.getApplyTypes());
         model.put("states", applyRecordService.getApplyStates());
         return "funds/index";
+    }
+
+    @GetMapping("/setEmailAuth")
+    public String setEmailAuth(){
+        return "funds/set_email_auth";
     }
 
     @GetMapping("/apply/add")
@@ -82,6 +88,23 @@ public class FundsController {
         }else{
             return "redirect:/funds/apply/add";
         }
+    }
+
+    @RequestMapping( value = "/apply/sendEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> sendEmail(@RequestBody JSONObject params){
+        boolean flag = Util.sendEmail(params.getString("from"), params.getString("subject"),
+                params.getString("body"), params.getString("from"),
+                Util.aesDecode(params.getString("authCode")));
+        Map<String, Object> map = new HashMap<>(2);
+        if(flag){
+            map.put("success", "true");
+            map.put("subject", params.getString("subject"));
+            map.put("body", params.getString("body"));
+        } else {
+            map.put("success", "false");
+        }
+        return map;
     }
 
     @RequestMapping("/apply/delete")

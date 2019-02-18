@@ -1,0 +1,44 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/funds_layout">
+    <div class="mx-4" layout:fragment="content">
+        <ol>
+            <li>
+                <a id="log_email_a" href="http://exmail.qq.com/login" target="_blank">腾讯企业邮箱登录</a>
+                <img id="log_email_png" class="d-none position-fixed" th:src="@{/static/img/email_config/log_email.png}" width="640" height="320"/>
+            </li>
+            <li>
+                <a id="gen_pwd_a" href="#">进入设置，打开安全登录（需绑定微信），生成客户端密码（记录下来，用于设置邮箱授权）</a>
+                <img id="gen_pwd_png" class="d-none position-fixed" th:src="@{/static/img/email_config/gen_pwd.png}" width="640" height="320"/>
+            </li>
+            <li>
+                <a th:href="@{/user/update}">更新用户，填加邮箱和授权码</a>
+            </li>
+            <li>
+                <a th:href="@{/user/update}">设置完成后，在提交申请后可同时发送邮件</a>
+            </li>
+        </ol>
+
+        <script th:inline="javascript">
+            $(function(){
+                $("#log_email_a").hover(function(){
+                    let node = $("#log_email_png");
+                    node.removeClass("d-none");
+                    node.css("left", event.clientX);
+                    node.css("top", event.clientY + 10);
+                },function(){
+                    let node = $("#log_email_png");
+                    node.addClass("d-none");
+                });
+                $("#gen_pwd_a").hover(function(){
+                    let node = $("#gen_pwd_png");
+                    node.removeClass("d-none");
+                    node.css("left", event.clientX);
+                    node.css("top", event.clientY + 10);
+                },function(){
+                    let node = $("#gen_pwd_png");
+                    node.addClass("d-none");
+                });
+            })
+        </script>
+    </div>
+</div>

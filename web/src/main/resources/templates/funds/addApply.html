@@ -6,29 +6,29 @@
                 <h5>申请</h5>
                 <form th:action="@{/funds/apply/save}" method="post" role="form" id="apply_form">
                     <input type="hidden" id="id" name="id" th:value="${apply?.id}"/>
-                    <div class="form-group">
+                    <div class="form-group py-2">
                         <div class="input-group date" id="applyDatePicker" data-date-format="yyyy-mm-dd hh:ii">
                             <label for="date" class="input-group-addon">日期：</label>
                             <input type="text" id="date" name="date" required class="form-control" th:value="${apply?.date}" readonly style="background: #fff;"/>
                             <span class="input-group-addon data-img">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
-                        <div class="input-group">
+                        <div class="input-group py-2">
                             <label for="money" class="input-group-addon">金额：</label>
                             <input type="number" id="money" name="money" min="0.0" step="0.1" th:value="${apply?.money}" required class="form-control" />
                         </div>
-                        <div class="input-group">
+                        <div class="input-group py-2">
                             <label for="type" class="input-group-addon">类型：</label>
                             <select class="form-control" id="type" name="type">
                                 <option th:each="type:${types}" th:selected="${apply?.type==type.key}" th:value="${type.key}" th:text="${type.value}"></option>
                             </select>
                         </div>
-                        <div class="input-group">
+                        <div class="input-group py-2">
                             <label for="reason" class="input-group-addon">描述：</label>
                             <input type="text" id="reason" name="reason" th:value="${apply?.reason}" required class="form-control" />
                         </div>
-                        <div class="input-group">
+                        <div class="input-group py-2">
                             <label class="input-group-addon">人员：</label>
                             <div class="form-check form-check-inline" th:each="user : ${users}">
                                 <label class="form-check-label">
@@ -36,18 +36,28 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-4 offset-4">
+                        <div class="input-group py-2">
+                            <label class="input-group-addon">发送邮件：</label>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" id="send_email" name="send_email">
+                                    需要设置<a th:href="@{/funds/setEmailAuth}">腾讯企业邮件发送授权</a>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4 offset-4 py-2">
                             <input class="form-control btn btn-primary" type="submit" value="保存"/>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-        <a id="send_email" href="" class="hide"></a>
-        <script>
+        <script th:inline="javascript">
             $(function () {
                 $("#apply_form").submit(function(){
-                    sendEmail();
+                    if($("#send_email:checked").length > 0){
+                        sendEmail();
+                    }
                     return true;
                 });
 
@@ -55,23 +65,48 @@
                     let id=$("input[name='id']").val(),
                         date=$("input[name='date']").val(),
                         money=$("input[name='money']").val(),
-                        type=$("select[name='type']").text(),
-                        reason=$("input[name='reason']").val(),
-                        body="日期：" + date +"<br/>";
-                        body+="金额：" + money+"<br/>";
-                        body+="类型：" + type+"<br/>";
-                        body+="备注：" + reason;
+                        type=$("select[name='type']").find("option:selected").text(),
+                        reason=$("input[name='reason']").val();
+                    let persons = "";
+                    $("input[name=persons]:checked").each(function(){
+                        persons += $(this).next().text() + " ";
+                    });
+                    let body="<p>日期：" + date +"日<br/>";
+                        body+="金额：" + money+"（元）<br/>";
+                        body+="类型：" + type +"<br/>";
+                        body+="人员：" + persons +"<br/>";
+                        body+="备注：" + reason + "</p>";
                     let subject = "经费报销";
                     if(id != null && id !== ""){
                         subject = "经费报销（修改" +date+ "）";
                     }
-                    let persons = "";
-                        $("input[name=presons]:checked").each(function(){
-                        $(this).next('span').text();
+                    /*<![CDATA[*/
+                    let url= /*[[@{/funds/apply/sendEmail}]]*/ '#';
+                    let from = /*[[${session.user.email}]]*/ '#';
+                    let authCode = /*[[${session.user.authCode}]]*/ '#';
+                    /*]]>*/
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        data:JSON.stringify({from:from, authCode: authCode, subject:subject, body:body, persons:persons}),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        async: true,
+                        success: function(data) {
+                            if(data.success === 'true'){
+                                let str = "<div class='position-fixed alert alert-info alert-dismissible' style='right:2rem;bottom:2rem;'>";
+                                str += "<button data-dismiss='alert' class='close'>&times;</button>";
+                                str += "<div class='card'>";
+                                str += "<div class='card-header'>邮件发送成功</div>";
+                                str += "<div class='card-body'>";
+                                str += "<div class='card-title'>"+data.subject+"</div>";
+                                str += "<div class='card-text'>"+data.body+"</div>";
+                                str += "</div>";
+                                str += "</div>";
+                                $("body").append($(str));
+                            }
+                        }
                     });
-
-                    $("#send_email").attr("href","mailto:caopeihe@topnet.net.cn?Subject="+subject+"&body="+body + "&cc=guoxiaoliang@topnet.net.cn");
-                    document.getElementById("send_email").click();
                 }
 
 
@@ -87,6 +122,7 @@
                     pickerPosition: 'bottom-left',
                     showMeridian: 1
                 });
+                $("#date").datetimepicker("setDate", new Date());
             });
         </script>
     </div>

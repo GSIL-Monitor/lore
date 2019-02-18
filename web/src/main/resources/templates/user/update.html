@@ -1,0 +1,25 @@
+<div xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+     layout:decorator="layout/funds_layout">
+    <div layout:fragment="content">
+        <form th:action="@{/user/userUpdate}" method="post" role="form">
+            <input type="text" id="id" name="id" th:value="${user.id}" hidden/>
+            <div class="form-group py-2 row">
+                <div class="input-group py-2 col-md-6 offset-md-3">
+                    <label for="name" class="input-group-addon w-25">用户名：</label>
+                    <input class="form-control" type="text" id="name" name="name" readonly th:value="${user.name}"/> <br/>
+                </div>
+                <div class="input-group py-2 col-md-6 offset-md-3">
+                    <label for="email" class="input-group-addon w-25">邮箱：</label>
+                    <input class="form-control" type="email" id="email" name="email" placeholder="xxx@topnet.net.cn" th:value="${user.email}"/> <br/>
+                </div>
+                <div class="input-group py-2 col-md-6 offset-md-3">
+                    <label for="authCode" class="input-group-addon w-25">授权码：</label>
+                    <input class="form-control" type="text" id="authCode" name="authCode"/> <br/>
+                </div>
+                <div class="input-group py-2 col-md-6 offset-md-3">
+                    <input class="btn btn-primary form-control" type="submit" value="修改"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

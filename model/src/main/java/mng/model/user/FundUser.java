@@ -5,6 +5,10 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.Objects;
+
+/**
+ * @author <a href="ehoac@sina.com">ehoac</a>
+ */
 @Proxy(lazy = false)
 @Entity
 @Table(name="user")
@@ -12,6 +16,8 @@ public class FundUser extends Base {
     private String name;
     private String nickName;
     private String password;
+    private String email;
+    private String authCode;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
@@ -68,19 +74,29 @@ public class FundUser extends Base {
         this.nickName = nickName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FundUser fundUser = (FundUser) o;
-        return Objects.equals(name, fundUser.name) &&
-                Objects.equals(nickName, fundUser.nickName) &&
-                Objects.equals(password, fundUser.password) &&
-                Objects.equals(role, fundUser.role);
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, nickName, password, role);
+        return Objects.hash(name, nickName, password, email, authCode, role);
     }
 }
